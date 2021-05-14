@@ -1,0 +1,18 @@
+.title__filter {
+    font-size: 1.2rem;
+}
+.filter {
+    ul{
+        li{
+            text-align: left;
+            list-style: none;
+        }
+    }
+}
+.filter__item {
+    input {
+        width: 1rem;
+        height: 1rem;
+        margin-right: .4rem;
+    }
+}
