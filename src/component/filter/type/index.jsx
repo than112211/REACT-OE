@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, createRef } from 'react';
 import PropTypes from 'prop-types';
 
 class Type extends Component {
@@ -7,7 +7,7 @@ class Type extends Component {
         this.state = {
             product:[],
             type:[],
-            idTypeCheck:[]
+            idTypeCheck:[],
         }
     }
     componentDidMount(){
@@ -62,6 +62,14 @@ class Type extends Component {
                     product:data
                 })     
             })
+            this.inputType = (element) =>{
+               if(element){
+                   if(element.checked== true){
+                       element.checked=false
+                   }
+               }
+            }
+           
         }
 
         if(prevState.idTypeCheck !== idTypeCheck){
@@ -79,8 +87,9 @@ class Type extends Component {
                 this.props.getIDType(idTypeCheck)
                 this.props.getProduct(data)
             })
+            
         }
-
+     
       
     }
   
@@ -117,15 +126,17 @@ class Type extends Component {
         })
        return number
     }
+ 
     render() {
         const {type} = this.state
+        const {filter} = this.props
         return (
             <div className="filter type">
             <h1 className="title__filter">Type</h1>
            <ul>
                 {type.map((type,index) =>{
                     return <div className="filter__item type__item" style={{display : this.handleTotalProduct(index+1) > 0  ? 'block' : 'none'}}>
-                            <li > <input onChange={ (event) => this.handleChangeCheckType(event,index+1)}  type="checkbox"></input>{type.name} 
+                            <li > <input ref={this.inputType} onChange={ (event) => this.handleChangeCheckType(event,index+1)}   type="checkbox"></input>{type.name} 
                                 ({this.handleTotalProduct(index+1)})
                             </li>
                         </div>
@@ -141,6 +152,7 @@ Type.propTypes = {
     idCategory:PropTypes.object,
     getProduct:PropTypes.func,
     getIDType:PropTypes.func,
+    filter:PropTypes.bool,
 };
 
 export default Type;

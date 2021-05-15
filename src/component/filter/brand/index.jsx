@@ -87,6 +87,13 @@ class Brand extends Component {
                     product:data
                 })     
             })
+            this.inputBrand = (element) =>{
+                if(element){
+                    if(element.checked== true){
+                        element.checked=false
+                    }
+                }
+             }
         }
 
         if(prevState.idBrandCheck !== idBrandCheck){
@@ -128,11 +135,11 @@ class Brand extends Component {
         const {brand} = this.state
         return (
             <div className="filter type">
-                <h1 className="title__filter">Type</h1>
+                <h1 className="title__filter">Brand</h1>
                 <ul>
                         {brand.map((brand,index) =>{
                             return <div className="filter__item brand__item" style={{display : this.handleTotalProduct(index+1) > 0  ? 'block' : 'none'}}>
-                                    <li > <input onChange={ (event) => this.handleChangeCheckTBrand(event,index+1)}  type="checkbox"></input>{brand.name} 
+                                    <li > <input ref={this.inputBrand} onChange={ (event) => this.handleChangeCheckTBrand(event,index+1)}  type="checkbox"></input>{brand.name} 
                                         ({this.handleTotalProduct(index+1)})
                                     </li>
                                 </div>
@@ -148,6 +155,7 @@ Brand.propTypes = {
     getProduct:PropTypes.func,
     getIDBrand:PropTypes.func,
     idType:PropTypes.array,
+    filter:PropTypes.bool,
 };
 
 export default Brand;
