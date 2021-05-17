@@ -1,13 +1,16 @@
 
-const Brand =  (state = {} ,action) => {
+const Brand =  (state = [] ,action) => {
     switch (action.type){
-        case 'FILTERBRAND' : {
-          state = action.payload
-        return state
+        case 'ADD_BRAND' : {
+          return [...state,action.payload]
+        }
+        case 'REMOVE_BRAND' : {
+          let newid = [...state]
+          newid.splice(state.indexOf(action.payload),1)
+            return newid
         }
         case 'CLEARBRAND' : {
-          state = {}
-        return state
+        return []
         }
         default : return state
     }

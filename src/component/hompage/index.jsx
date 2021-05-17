@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import Category from '../../container/category'
-import Type from '../filter/type/index'
+import Type from '../../container/type'
 import Header from '../header/index'
 import Product from '../product/index'
-import Brand from '../filter/brand/index'
-import Rating from '../filter/rating/index'
-import Price from '../filter/price/index'
+import Brand from '../../container/brand'
+import Rating from '../../container/rating'
+import Price from '../../container/price'
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { Pagination, PaginationItem, PaginationLink } from 'reactstrap';
 import './index.scss';
@@ -155,11 +155,11 @@ class Home extends Component {
                     </div>
                         <div className="col-3 col-sm-3">
                         <Button className="btn__clear" color="danger" style={{display: filter ? 'block' : 'none'}} onClick={this.handleClickClearFilter}>Clear Filter</Button>
-                        <Category getProduct={this.getProduct} getIDCategory={this.getIDCategory}></Category>
-                        <Type filter={filter} idCategory={idCategory} getProduct={this.getProduct}  getIDType={this.getIDType} ></Type>
-                        <Brand filter={filter} idCategory={idCategory} idType={idType} getProduct={this.getProduct} getIDBrand={this.getIDBrand}></Brand>
-                        <Rating idCategory={idCategory} idType={idType} idBrand={idBrand} getProduct={this.getProduct} getIDRating={this.getIDRating}></Rating>
-                        <Price idCategory={idCategory} idType={idType} idBrand={idBrand} idRating={idRating} getProduct={this.getProduct} getIDPrice={this.getIDPrice}></Price>
+                        <Category ></Category>
+                        <Type ></Type>
+                        <Brand></Brand>
+                        <Rating></Rating>
+                        <Price ></Price>
                         </div>
                         <div className="col-9 col-sm-9">
                                 <Product product={product} search={search}></Product>

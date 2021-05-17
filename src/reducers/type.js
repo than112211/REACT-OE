@@ -1,13 +1,16 @@
 
-const Type =  (state = {} ,action) => {
+const Type =  (state = [] ,action) => {
     switch (action.type){
-        case 'FILTERTYPE' : {
-          state = action.payload
-        return state
+        case 'ADD_TYPE' : {
+        return [...state,action.payload]
+        }
+        case 'REMOVE_TYPE' : {
+            let newid = [...state]
+            newid.splice(state.indexOf(action.payload),1)
+        return newid
         }
         case 'CLEARTYPE' : {
-          state = {}
-        return state
+        return []
         }
         default : return state
     }

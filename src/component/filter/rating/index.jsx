@@ -12,7 +12,6 @@ class Rating extends Component {
         super(props)
         this.state = {
             product:[],
-            idRating:null,
         }
     }
     handleTypeChecked(id){
@@ -39,10 +38,9 @@ class Rating extends Component {
        return number
     }
     componentDidMount(){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        const {idBrand,idType} = this.props
-
-        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(idType) ? this.handleTypeChecked(idType) : ``}${this.handleBrandChecked(idBrand) ? this.handleBrandChecked(idBrand) : ``}`;
+        const {idCategory,idDetailCategory} = this.props.category
+        const {type,brand} = this.props
+        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}`;
         const option = {
             method : 'GET',
             mode : 'cors',
@@ -60,11 +58,10 @@ class Rating extends Component {
         
     }
     componentDidUpdate(prevProps, prevState){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        const {idBrand,idType} = this.props
-        const {idRating} = this.state
-        if(prevProps.idCategory.idCategory !== idCategory || prevProps.idCategory.idDetailCategory !== idDetailCategory || prevProps.idType !== this.props.idType || prevProps.idBrand !== this.props.idBrand){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(idType) ? this.handleTypeChecked(idType) : ``}${this.handleBrandChecked(idBrand) ? this.handleBrandChecked(idBrand) : ``}`;
+        const {idCategory,idDetailCategory} = this.props.category
+        const {type,brand,rating,ToTalProduct}  = this.props
+        if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory || prevProps.type !== type || prevProps.brand !== brand){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -82,8 +79,8 @@ class Rating extends Component {
        
         }
 
-        if(prevState.idRating !== idRating){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(idType) ? this.handleTypeChecked(idType) : ``}${this.handleBrandChecked(idBrand) ? this.handleBrandChecked(idBrand) : ``}${idRating ? `&rating=${idRating}` : ``}`;
+        if(prevState.rating !== rating){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` : ``}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -93,16 +90,13 @@ class Rating extends Component {
             }
             fetch(url,option)
             .then(response => response.json())
-            .then(data => {  
-                this.props.getIDRating(idRating)
-                this.props.getProduct(data)
+            .then(data => {
+                ToTalProduct(data)
             })
         }
     }
     handleClickRating(id) {
-        this.setState({
-            idRating:id
-        })
+        this.props.FilterRating(id)
     }
     render() {
         const rating = [1,2,3,4,5]
@@ -134,8 +128,8 @@ Rating.propTypes = {
     idCategory:PropTypes.object,
     getProduct:PropTypes.func,
     getIDRating:PropTypes.func,
-    idType:PropTypes.array,
-    idBrand:PropTypes.array,
+    type:PropTypes.array,
+    brand:PropTypes.array,
 };
 
 export default Rating;

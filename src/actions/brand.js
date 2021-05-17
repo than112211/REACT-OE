@@ -1,7 +1,13 @@
-export const FilterBrand = (product) => {
+export const AddBrand = (id) => {
     return {
-        type: 'FILTERBRAND',
-        payload:product
+        type: 'ADD_BRAND',
+        payload:id
+    }
+}
+export const RemoveBrand = (id) => {
+    return {
+        type: 'REMOVE_BRAND',
+        payload:id
     }
 }
 export const ClearBrand = () => {
