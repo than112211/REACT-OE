@@ -59,7 +59,7 @@ class Rating extends Component {
     }
     componentDidUpdate(prevProps, prevState){
         const {idCategory,idDetailCategory} = this.props.category
-        const {type,brand,rating,ToTalProduct}  = this.props
+        const {type,brand,rating,ToTalProduct,pagination,CountProduct}  = this.props
         if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory || prevProps.type !== type || prevProps.brand !== brand){
             const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}`;
             const option = {
@@ -79,8 +79,8 @@ class Rating extends Component {
        
         }
 
-        if(prevState.rating !== rating){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` : ``}`;
+        if(prevState.rating !== rating || prevProps.pagination.page !== pagination.page){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` : ``}&_page=${pagination.page}&_limit=${pagination.limit}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -89,14 +89,19 @@ class Rating extends Component {
                 },
             }
             fetch(url,option)
-            .then(response => response.json())
-            .then(data => {
+            .then(response => {
+                CountProduct(response.headers.get('x-total-count'))
+                return response.json()
+            })
+            .then(data => {                
                 ToTalProduct(data)
             })
         }
     }
     handleClickRating(id) {
-        this.props.FilterRating(id)
+        const {FilterRating,ClearPrice} = this.props
+        FilterRating(id)
+        ClearPrice()
     }
     render() {
         const rating = [1,2,3,4,5]

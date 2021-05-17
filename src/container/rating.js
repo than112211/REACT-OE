@@ -1,7 +1,8 @@
 import {connect} from 'react-redux'
 import Rating from '../component/filter/rating/index'
 import {FilterRating} from '../actions/rating'
-import {ToTalProduct} from '../actions/product'
+import {ToTalProduct,CountProduct} from '../actions/product'
+import {ClearPrice} from '../actions/price'
 
 
 const mapStatesToProps = (state) =>{
@@ -9,11 +10,15 @@ const mapStatesToProps = (state) =>{
         category:state.category,
         type:state.type,
         brand:state.brand,
-        rating:state.rating
+        rating:state.rating,
+        pagination:state.pagination
+
     }
 }
 const mapActionsToProps = {
+    ClearPrice,
     FilterRating,
     ToTalProduct,
+    CountProduct,
 }
 export default connect(mapStatesToProps,mapActionsToProps)(Rating)

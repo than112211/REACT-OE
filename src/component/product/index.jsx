@@ -18,7 +18,7 @@ class Product extends Component {
     }
     render() {
         const {product,search} = this.props
-
+        console.log(product)
         return (
             <div className="row">
             {product ? 

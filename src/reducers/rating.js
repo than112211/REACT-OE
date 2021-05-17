@@ -1,5 +1,5 @@
 
-const Rating =  (state = {} ,action) => {
+const Rating =  (state = null ,action) => {
     switch (action.type){
         case 'FILTERRATING' : {
         return action.payload
