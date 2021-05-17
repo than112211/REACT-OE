@@ -133,7 +133,7 @@ class Home extends Component {
     }
   
     render() {
-        console.log('react thuan')
+        console.log('redux')
         const {idCategory,idType,idBrand,idRating,idPrice,product,filter,drop,search} = this.state
         return (
             <div>
