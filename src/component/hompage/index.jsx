@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
-import Category from '../filter/category/index'
+import Category from '../../container/category'
 import Type from '../filter/type/index'
 import Header from '../header/index'
 import Product from '../product/index'

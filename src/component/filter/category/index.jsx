@@ -6,10 +6,8 @@ class Category extends Component {
     constructor(props){
         super(props)
         this.state = {
-            product:[],
             category: [],
             idCategory: 1,
-            idDetailCategory:null
         }
     }
 //goi lần đầu duy nhất
@@ -30,8 +28,10 @@ class Category extends Component {
     }
     // sau khi render xong thi moi goi , state thay đổi thì gọi lại
     componentDidUpdate(prevProps, prevState){
-        if(prevState.idCategory !== this.state.idCategory || prevState.idDetailCategory !== this.state.idDetailCategory ){
-        const url = `http://localhost:3000/products?category=${this.state.idCategory}${this.state.idDetailCategory ?`&detail_category=${this.state.idDetailCategory}`:``}`;
+        const {idCategory,idDetailCategory} = this.props.category
+        const {ToTalProduct} = this.props
+        if(prevState.idCategory !== idCategory || prevState.idDetailCategory !== idDetailCategory ){
+        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}`;
         const option = {
             method : 'GET',
             mode : 'cors',
@@ -41,30 +41,29 @@ class Category extends Component {
         }
         fetch(url,option)
         .then(response => response.json())
-        .then(data => {  
-              this.setState({product:data})
-              this.props.getProduct(data)
-              this.props.getIDCategory({
-                  idCategory:this.state.idCategory,
-                  idDetailCategory:this.state.idDetailCategory
-              })
-          
+        .then(data => {                
+            ToTalProduct(data)
         })
     }
     }
     handleClickCategory(id){
         this.setState({
             idCategory:id,
-            idDetailCategory:null
         })
+        this.props.FilterCategory({
+            idCategory:id,
+            idDetailCategory:null
+          })
     }
     handleClickDetailCategory(id){
-        this.setState({
+        this.props.FilterCategory({
+            idCategory:this.state.idCategory,
             idDetailCategory:id
-        })
+          })
     }
     render() {
-        const {category,idCategory} = this.state
+        const {idCategory} = this.props.category
+        const {category} = this.state
         return (
             <div className="filter category">
                 <h1 className="title__filter">Category</h1>
