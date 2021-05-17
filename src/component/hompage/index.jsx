@@ -133,6 +133,7 @@ class Home extends Component {
     }
   
     render() {
+        console.log('react thuan')
         const {idCategory,idType,idBrand,idRating,idPrice,product,filter,drop,search} = this.state
         return (
             <div>
