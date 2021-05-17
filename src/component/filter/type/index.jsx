@@ -7,11 +7,10 @@ class Type extends Component {
         this.state = {
             product:[],
             type:[],
-            idTypeCheck:[],
         }
     }
     componentDidMount(){
-        const {idCategory,idDetailCategory} = this.props.idCategory
+        const {idCategory,idDetailCategory} = this.props.category
         const url = `http://localhost:3000/types?category_id=${idCategory}`;
         const option = {
             method : 'GET',
@@ -37,9 +36,9 @@ class Type extends Component {
         })
     }
     componentDidUpdate(prevProps, prevState){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        const {idTypeCheck,product} = this.state
-        if(prevProps.idCategory.idCategory !== idCategory || prevProps.idCategory.idDetailCategory !== idDetailCategory){
+        const {idCategory,idDetailCategory} = this.props.category
+        const {ToTalProduct,type} = this.props
+        if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory){
             const url = `http://localhost:3000/types?category_id=${idCategory}`;
             const option = {
                 method : 'GET',
@@ -68,12 +67,10 @@ class Type extends Component {
                        element.checked=false
                    }
                }
-            }
-           
+            }  
         }
-
-        if(prevState.idTypeCheck !== idTypeCheck){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}${idTypeCheck ? this.handleTypeChecked(idTypeCheck) : ``}`;
+        if(prevState.type !== type){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}${type ? this.handleTypeChecked(type) : ``}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -84,31 +81,20 @@ class Type extends Component {
             fetch(url,option)
             .then(response => response.json())
             .then(data => {  
-                this.props.getIDType(idTypeCheck)
-                this.props.getProduct(data)
+               ToTalProduct(data)
             })
             
         }
-     
-      
     }
-  
     handleChangeCheckType(e,id){
-        const {idTypeCheck} = this.state
+        const {RemoveType,AddType,ClearBrand,ClearRating} = this.props
         if(e.target.checked) {
-            this.setState({
-                //update state
-                //ES6 tương tự .push array
-              idTypeCheck : [...idTypeCheck,id]
-            })
-
-        }
+            AddType(id)
+            ClearRating()
+            ClearBrand()
+            }
         else {
-            let newid = [...idTypeCheck]
-            newid.splice(idTypeCheck.indexOf(id),1)
-            this.setState({
-                idTypeCheck:newid
-            })
+            RemoveType(id)
         }
     }
     handleTypeChecked(id){
@@ -129,7 +115,6 @@ class Type extends Component {
  
     render() {
         const {type} = this.state
-        const {filter} = this.props
         return (
             <div className="filter type">
             <h1 className="title__filter">Type</h1>
@@ -149,10 +134,12 @@ class Type extends Component {
 }
 
 Type.propTypes = {
-    idCategory:PropTypes.object,
-    getProduct:PropTypes.func,
-    getIDType:PropTypes.func,
-    filter:PropTypes.bool,
+    category:PropTypes.object,
+    type:PropTypes.array,
+    AddType:PropTypes.func,
+    RemoveType:PropTypes.func,
+    ClearType:PropTypes.func,
+    ToTalProduct:PropTypes.func,
 };
 
 export default Type;

@@ -7,7 +7,6 @@ class Price extends Component {
         this.state = {
             product:[],
             values: [0,100,300,600,1000],
-            idPrice:null
         }
     }
     handleTypeChecked(id){
@@ -33,10 +32,9 @@ class Price extends Component {
        return number
     }
     componentDidMount(){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        const {idBrand,idType,idRating} = this.props
-
-        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(idType) ? this.handleTypeChecked(idType) : ``}${this.handleBrandChecked(idBrand) ? this.handleBrandChecked(idBrand) : ``}${idRating ? `&rating=${idRating}` : ``}`;
+        const {idCategory,idDetailCategory} = this.props.category
+        const {type,brand,rating} = this.props
+        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` : ``}`;
         const option = {
             method : 'GET',
             mode : 'cors',
@@ -53,11 +51,11 @@ class Price extends Component {
         })
     }
     componentDidUpdate(prevProps, prevState){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        const {idBrand,idType,idRating} = this.props
-        const {idPrice,values} = this.state
-        if(prevProps.idCategory.idCategory !== idCategory || prevProps.idCategory.idDetailCategory !== idDetailCategory || prevProps.idType !== idType || prevProps.idBrand !== idBrand || prevProps.idRating !== idRating){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(idType) ? this.handleTypeChecked(idType) : ``}${this.handleBrandChecked(idBrand) ? this.handleBrandChecked(idBrand) : ``}${idRating ? `&rating=${idRating}` : ``}`;
+        const {idCategory,idDetailCategory} = this.props.category
+        const {type,brand,rating,price,ToTalProduct} = this.props
+        const {values} = this.state
+        if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory || prevProps.type !== type || prevProps.brand !== brand || prevProps.rating !== rating){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` : ``}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -75,8 +73,8 @@ class Price extends Component {
        
         }
 
-        if(prevState.idPrice !== idPrice){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(idType) ? this.handleTypeChecked(idType) : ``}${this.handleBrandChecked(idBrand) ? this.handleBrandChecked(idBrand) : ``}${idRating ? `&rating=${idRating}` :``}${idPrice ? `&price_gte=${values[idPrice-1]+1}`: values[idPrice] ? `&price_lte=${values[idPrice]}` :``}`
+        if(prevState.price !== price){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price ? `&price_gte=${values[price-1]+1}`: values[price] ? `&price_lte=${values[price]}` :``}`
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -87,15 +85,15 @@ class Price extends Component {
             fetch(url,option)
             .then(response => response.json())
             .then(data => {  
-                this.props.getProduct(data)
-                this.props.getIDPrice([values[idPrice-1]+1,values[idPrice] ? values[idPrice] : null])
+                ToTalProduct(data)
             })
         }
     }
     handleClickPrice(id){
-        this.setState({
-            idPrice:id
-        })
+        const {FilterPrice} = this.props
+        const {values} = this.state
+        FilterPrice([values[id-1]+1,values[id] ? values[id] : null])
+
     }
     render() {
         const {values} = this.state
@@ -123,10 +121,10 @@ class Price extends Component {
 Price.propTypes = {
     idCategory:PropTypes.object,
     getProduct:PropTypes.func,
-    idType:PropTypes.array,
-    idBrand:PropTypes.array,
-    idRating:PropTypes.number,
-    getIDPrice:PropTypes.func,
+    type:PropTypes.array,
+    brand:PropTypes.array,
+    rating:PropTypes.number,
+    getprice:PropTypes.func,
 };
 
 export default Price;

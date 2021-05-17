@@ -47,19 +47,27 @@ class Category extends Component {
     }
     }
     handleClickCategory(id){
+        const {FilterCategory,ClearType,ClearBrand,ClearRating} = this.props
         this.setState({
             idCategory:id,
         })
-        this.props.FilterCategory({
+        FilterCategory({
             idCategory:id,
             idDetailCategory:null
           })
+        ClearType()
+        ClearBrand()
+        ClearRating()
     }
     handleClickDetailCategory(id){
-        this.props.FilterCategory({
+        const {FilterCategory,ClearType,ClearBrand,ClearRating} = this.props
+        FilterCategory({
             idCategory:this.state.idCategory,
             idDetailCategory:id
           })
+        ClearType()
+        ClearBrand()
+        ClearRating()
     }
     render() {
         const {idCategory} = this.props.category
@@ -88,8 +96,11 @@ class Category extends Component {
 }
 
 Category.propTypes = {
-    getProduct:PropTypes.func,
-    getIDCategory:PropTypes.func,
+    category:PropTypes.object,
+    FilterCategory:PropTypes.func,
+    ClearCategory:PropTypes.func,
+    ToTalProduct:PropTypes.func,
+    ClearType:PropTypes.func,
 };
 
 export default Category;

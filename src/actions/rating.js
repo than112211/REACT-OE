@@ -1,7 +1,7 @@
-export const FilterRating = (product) => {
+export const FilterRating = (id) => {
     return {
         type: 'FILTERRATING',
-        payload:product
+        payload:id
     }
 }
 export const ClearRating = () => {

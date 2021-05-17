@@ -1,7 +1,7 @@
-export const FilterPrice = (product) => {
+export const FilterPrice = (arr) => {
     return {
         type: 'FILTERPRICE',
-        payload:product
+        payload:arr
     }
 }
 export const ClearPrice = () => {

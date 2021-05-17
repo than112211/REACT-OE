@@ -7,7 +7,6 @@ class Brand extends Component {
         this.state = {
             product:[],
             brand:[],
-            idBrandCheck:[]
         }
     }
     handleTypeChecked(id){
@@ -34,9 +33,8 @@ class Brand extends Component {
        return number
     }
     componentDidMount(){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        
-
+        const {idCategory,idDetailCategory} = this.props.category
+        const {type} = this.props
         const url = `http://localhost:3000/brands?category_id=${idCategory}`;
         const option = {
             method : 'GET',
@@ -51,7 +49,7 @@ class Brand extends Component {
             this.setState({brand:data[0].brand})
         })
         
-        const url1 = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(this.props.idType) ? this.handleTypeChecked(this.props.idType) : ``}`;
+        const url1 = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}`;
          
         fetch(url1,option)
         .then(response => response.json())
@@ -62,9 +60,9 @@ class Brand extends Component {
         })
     }
     componentDidUpdate(prevProps, prevState){
-        const {idCategory,idDetailCategory} = this.props.idCategory
-        const {idBrandCheck,product} = this.state
-        if(prevProps.idCategory.idCategory !== idCategory || prevProps.idCategory.idDetailCategory !== idDetailCategory || prevProps.idType !== this.props.idType){
+        const {idCategory,idDetailCategory} = this.props.category
+        const {type,ToTalProduct,brand} = this.props
+        if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory || prevProps.type !== type){
             const url = `http://localhost:3000/brands?category_id=${idCategory}`;
             const option = {
                 method : 'GET',
@@ -78,7 +76,7 @@ class Brand extends Component {
             .then(data => {  
                 this.setState({brand:data[0].brand})     
             })
-            const url1 = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(this.props.idType) ? this.handleTypeChecked(this.props.idType) : ``}`;
+            const url1 = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}`;
          
             fetch(url1,option)
             .then(response => response.json())
@@ -96,8 +94,8 @@ class Brand extends Component {
              }
         }
 
-        if(prevState.idBrandCheck !== idBrandCheck){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(this.props.idType) ? this.handleTypeChecked(this.props.idType) : ``}${idBrandCheck ? this.handleBrandChecked(idBrandCheck) :`` }`;
+        if(prevState.brand !== brand){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${brand ? this.handleBrandChecked(brand) :`` }`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -108,27 +106,18 @@ class Brand extends Component {
             fetch(url,option)
             .then(response => response.json())
             .then(data => {  
-                this.props.getIDBrand(idBrandCheck)
-                this.props.getProduct(data)
+                ToTalProduct(data)                
             })
         }
     }
     handleChangeCheckTBrand(e,id){
-        const {idBrandCheck} = this.state
+        const {RemoveBrand,AddBrand,ClearRating} = this.props
         if(e.target.checked) {
-            this.setState({
-                //update state
-                //ES6 tương tự .push array
-                idBrandCheck : [...idBrandCheck,id]
-            })
-
-        }
+            AddBrand(id)
+            ClearRating()
+            }
         else {
-            let newid = [...idBrandCheck]
-            newid.splice(idBrandCheck.indexOf(id),1)
-            this.setState({
-                idBrandCheck:newid
-            })
+            RemoveBrand(id)
         }
     }
     render() {

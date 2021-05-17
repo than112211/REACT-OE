@@ -2,14 +2,11 @@
 const Rating =  (state = {} ,action) => {
     switch (action.type){
         case 'FILTERRATING' : {
-          state = action.payload
-        return state
+        return action.payload
         }
         case 'CLEARRATING' : {
-          state = {}
-        return state
+        return null
         }
-    
         default : return state
     }
 }

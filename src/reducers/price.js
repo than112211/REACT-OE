@@ -1,13 +1,11 @@
 
-const Price =  (state = {} ,action) => {
+const Price =  (state = [] ,action) => {
     switch (action.type){
         case 'FILTERPRICE' : {
-          state = action.payload
-        return state
+        return action.payload
         }
         case 'CLEARPRICE' : {
-            state = {}
-          return state
+          return []
           }
         default : return state
     }
