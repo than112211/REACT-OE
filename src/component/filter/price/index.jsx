@@ -52,8 +52,7 @@ class Price extends Component {
     }
     componentDidUpdate(prevProps, prevState){
         const {idCategory,idDetailCategory} = this.props.category
-        const {type,brand,rating,price,ToTalProduct} = this.props
-        const {values} = this.state
+        const {type,brand,rating,price,ToTalProduct,pagination,CountProduct} = this.props
         if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory || prevProps.type !== type || prevProps.brand !== brand || prevProps.rating !== rating){
             const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` : ``}`;
             const option = {
@@ -73,8 +72,9 @@ class Price extends Component {
        
         }
 
-        if(prevState.price !== price){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price ? `&price_gte=${values[price-1]+1}`: values[price] ? `&price_lte=${values[price]}` :``}`
+        if(prevState.price !== price || prevProps.pagination.page !== pagination.page){
+            console.log(price)
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: price[1] ? `&price_lte=${price[1]}` :``}&_page=${pagination.page}&_limit=${pagination.limit}`
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -83,8 +83,11 @@ class Price extends Component {
                 },
             }
             fetch(url,option)
-            .then(response => response.json())
-            .then(data => {  
+            .then(response => {
+                CountProduct(response.headers.get('x-total-count'))
+                return response.json()
+            })
+            .then(data => {                
                 ToTalProduct(data)
             })
         }
@@ -93,7 +96,6 @@ class Price extends Component {
         const {FilterPrice} = this.props
         const {values} = this.state
         FilterPrice([values[id-1]+1,values[id] ? values[id] : null])
-
     }
     render() {
         const {values} = this.state

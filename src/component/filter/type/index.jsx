@@ -37,7 +37,7 @@ class Type extends Component {
     }
     componentDidUpdate(prevProps, prevState){
         const {idCategory,idDetailCategory} = this.props.category
-        const {ToTalProduct,type} = this.props
+        const {ToTalProduct,type,pagination,CountProduct} = this.props
         if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory){
             const url = `http://localhost:3000/types?category_id=${idCategory}`;
             const option = {
@@ -69,8 +69,8 @@ class Type extends Component {
                }
             }  
         }
-        if(prevState.type !== type){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}${type ? this.handleTypeChecked(type) : ``}`;
+        if(prevState.type !== type || prevProps.pagination.page !== pagination.page){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}${type ? this.handleTypeChecked(type) : ``}&_page=${pagination.page}&_limit=${pagination.limit}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -79,19 +79,23 @@ class Type extends Component {
                 },
             }
             fetch(url,option)
-            .then(response => response.json())
-            .then(data => {  
-               ToTalProduct(data)
+            .then(response => {
+                CountProduct(response.headers.get('x-total-count'))
+                return response.json()
+            })
+            .then(data => {                
+                ToTalProduct(data)
             })
             
         }
     }
     handleChangeCheckType(e,id){
-        const {RemoveType,AddType,ClearBrand,ClearRating} = this.props
+        const {RemoveType,AddType,ClearBrand,ClearRating,ClearPrice} = this.props
         if(e.target.checked) {
             AddType(id)
             ClearRating()
             ClearBrand()
+            ClearPrice()
             }
         else {
             RemoveType(id)

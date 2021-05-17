@@ -29,9 +29,9 @@ class Category extends Component {
     // sau khi render xong thi moi goi , state thay đổi thì gọi lại
     componentDidUpdate(prevProps, prevState){
         const {idCategory,idDetailCategory} = this.props.category
-        const {ToTalProduct} = this.props
-        if(prevState.idCategory !== idCategory || prevState.idDetailCategory !== idDetailCategory ){
-        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}`;
+        const {ToTalProduct,pagination,CountProduct} = this.props
+        if(prevState.idCategory !== idCategory || prevState.idDetailCategory !== idDetailCategory  || prevProps.pagination.page !== pagination.page){
+        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ?`&detail_category=${idDetailCategory}`:``}&_page=${pagination.page}&_limit=${pagination.limit}`;
         const option = {
             method : 'GET',
             mode : 'cors',
@@ -40,14 +40,17 @@ class Category extends Component {
             },
         }
         fetch(url,option)
-        .then(response => response.json())
+        .then(response => {
+            CountProduct(response.headers.get('x-total-count'))
+            return response.json()
+        })
         .then(data => {                
             ToTalProduct(data)
         })
     }
     }
     handleClickCategory(id){
-        const {FilterCategory,ClearType,ClearBrand,ClearRating} = this.props
+        const {FilterCategory,ClearType,ClearBrand,ClearRating,ClearPrice} = this.props
         this.setState({
             idCategory:id,
         })
@@ -57,14 +60,16 @@ class Category extends Component {
           })
         ClearType()
         ClearBrand()
+        ClearPrice()
         ClearRating()
     }
     handleClickDetailCategory(id){
-        const {FilterCategory,ClearType,ClearBrand,ClearRating} = this.props
+        const {FilterCategory,ClearType,ClearBrand,ClearRating,ClearPrice} = this.props
         FilterCategory({
             idCategory:this.state.idCategory,
             idDetailCategory:id
           })
+          ClearPrice()
         ClearType()
         ClearBrand()
         ClearRating()

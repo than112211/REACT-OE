@@ -1,18 +1,15 @@
 const page = {
-    page:1,
-    litmit:9
+    page:2,
+    limit:9
 }
 const Pagination =  (state = page ,action) => {
     switch (action.type){
-        case 'FILTERPAGINATION' : {
-          state = action.payload
-        return state
+        case 'PAGINATION' : {
+        return {
+            ...state,
+            page:action.payload
         }
-        case 'CLEARPAGINATION' : {
-           state = {}
-        return state
         }
-    
         default : return state
     }
 }

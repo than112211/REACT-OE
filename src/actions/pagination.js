@@ -1,13 +1,9 @@
 export const FilterPagination = (page) => {
     return {
-        type: 'FILTERPAGINATION',
+        type: 'PAGINATION',
         payload:page
     }
 }
-export const ClearPagination = () => {
-    return {
-        type: 'CLEARPAGINATION',
-    }
-}
+
 
 

@@ -61,7 +61,7 @@ class Brand extends Component {
     }
     componentDidUpdate(prevProps, prevState){
         const {idCategory,idDetailCategory} = this.props.category
-        const {type,ToTalProduct,brand} = this.props
+        const {type,ToTalProduct,brand,pagination,CountProduct} = this.props
         if(prevProps.category.idCategory !== idCategory || prevProps.category.idDetailCategory !== idDetailCategory || prevProps.type !== type){
             const url = `http://localhost:3000/brands?category_id=${idCategory}`;
             const option = {
@@ -94,8 +94,8 @@ class Brand extends Component {
              }
         }
 
-        if(prevState.brand !== brand){
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${brand ? this.handleBrandChecked(brand) :`` }`;
+        if(prevState.brand !== brand || prevProps.pagination.page !== pagination.page){
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${brand ? this.handleBrandChecked(brand) :`` }&_page=${pagination.page}&_limit=${pagination.limit}`;
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -104,17 +104,21 @@ class Brand extends Component {
                 },
             }
             fetch(url,option)
-            .then(response => response.json())
-            .then(data => {  
-                ToTalProduct(data)                
+            .then(response => {
+                CountProduct(response.headers.get('x-total-count'))
+                return response.json()
+            })
+            .then(data => {                
+                ToTalProduct(data)
             })
         }
     }
     handleChangeCheckTBrand(e,id){
-        const {RemoveBrand,AddBrand,ClearRating} = this.props
+        const {RemoveBrand,AddBrand,ClearRating,ClearPrice} = this.props
         if(e.target.checked) {
             AddBrand(id)
             ClearRating()
+            ClearPrice()
             }
         else {
             RemoveBrand(id)
