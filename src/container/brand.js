@@ -4,7 +4,8 @@ import {AddBrand,ClearBrand,RemoveBrand} from '../actions/brand'
 import {ToTalProduct,CountProduct} from '../actions/product'
 import {ClearRating} from '../actions/rating'
 import {ClearPrice} from '../actions/price'
-
+import {ResetPage} from '../actions/pagination'
+import {SetFilter} from '../actions/home'
 
 const mapStatesToProps = (state) =>{
     return {
@@ -16,6 +17,8 @@ const mapStatesToProps = (state) =>{
     }
 }
 const mapActionsToProps = {
+    SetFilter,
+    ResetPage,
     ClearPrice,
     ClearRating,
     AddBrand,

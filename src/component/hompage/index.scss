@@ -8,3 +8,12 @@
     text-align: right;
     margin-bottom: 1rem;
 }
+.filter__container{
+    overflow: scroll;
+    height: 75vh;
+}
+.pagi{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -50,7 +50,7 @@ class Category extends Component {
     }
     }
     handleClickCategory(id){
-        const {FilterCategory,ClearType,ClearBrand,ClearRating,ClearPrice} = this.props
+        const {FilterCategory,ClearType,ClearBrand,ClearRating,ClearPrice,ResetPage,SetFilter} = this.props
         this.setState({
             idCategory:id,
         })
@@ -58,21 +58,25 @@ class Category extends Component {
             idCategory:id,
             idDetailCategory:null
           })
+          SetFilter()
         ClearType()
         ClearBrand()
         ClearPrice()
         ClearRating()
+        ResetPage()
     }
     handleClickDetailCategory(id){
-        const {FilterCategory,ClearType,ClearBrand,ClearRating,ClearPrice} = this.props
+        const {FilterCategory,ClearType,ClearBrand,ClearRating,ClearPrice,ResetPage,SetFilter} = this.props
         FilterCategory({
             idCategory:this.state.idCategory,
             idDetailCategory:id
           })
           ClearPrice()
+          SetFilter()
         ClearType()
         ClearBrand()
         ClearRating()
+        ResetPage()
     }
     render() {
         const {idCategory} = this.props.category
@@ -86,7 +90,7 @@ class Category extends Component {
                                 <li onClick={() => this.handleClickCategory(index+1)}>{category.name}
                                 
                                 </li>
-                                <ul style={{display : (idCategory && idCategory == index + 1) ? 'block' : 'none'}}>
+                                <ul className="sub__category" style={{display : (idCategory && idCategory == index + 1) ? 'block' : 'none'}}>
                                     {category.detail_category.map((detail,i) =>{
                                         return <li  onClick={() => this.handleClickDetailCategory(i+1)}>{detail.name}</li>
                                     })}

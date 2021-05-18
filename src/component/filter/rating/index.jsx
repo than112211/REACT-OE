@@ -99,9 +99,11 @@ class Rating extends Component {
         }
     }
     handleClickRating(id) {
-        const {FilterRating,ClearPrice} = this.props
+        const {FilterRating,ClearPrice,ResetPage,SetFilter} = this.props
         FilterRating(id)
         ClearPrice()
+        ResetPage()
+        SetFilter()
     }
     render() {
         const rating = [1,2,3,4,5]

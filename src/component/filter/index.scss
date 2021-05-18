@@ -1,8 +1,14 @@
 .title__filter {
     font-size: 1.2rem;
+    text-align: left;
+    margin-bottom: .6rem;
 }
 .filter {
+    padding: 1rem;
+    border-bottom: 1px solid rgba($color: #000000, $alpha: .1);
     ul{
+        margin: 0;
+        padding:0;
         li{
             text-align: left;
             list-style: none;
@@ -16,9 +22,11 @@
         margin-right: .4rem;
     }
 }
+.sub__category{
+    padding-left: 1.4rem!important;
+}
 .rating__item{
     text-align: left;
-    padding-left: 2rem;
     svg {
         color: orange;
     }
