@@ -73,8 +73,9 @@ class Price extends Component {
         }
 
         if(prevState.price !== price || prevProps.pagination.page !== pagination.page){
-            console.log(price)
-            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: price[1] ? `&price_lte=${price[1]}` :``}&_page=${pagination.page}&_limit=${pagination.limit}`
+            console.log(prevState.price !== price)
+
+            const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: ``}${price[1] ? `&price_lte=${price[1]}` :``}&_page=${pagination.page}&_limit=${pagination.limit}`
             const option = {
                 method : 'GET',
                 mode : 'cors',
@@ -93,9 +94,11 @@ class Price extends Component {
         }
     }
     handleClickPrice(id){
-        const {FilterPrice} = this.props
+        const {FilterPrice,ResetPage,SetFilter} = this.props
         const {values} = this.state
         FilterPrice([values[id-1]+1,values[id] ? values[id] : null])
+        ResetPage()
+        SetFilter()
     }
     render() {
         const {values} = this.state

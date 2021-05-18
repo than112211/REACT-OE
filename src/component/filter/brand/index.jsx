@@ -114,11 +114,13 @@ class Brand extends Component {
         }
     }
     handleChangeCheckTBrand(e,id){
-        const {RemoveBrand,AddBrand,ClearRating,ClearPrice} = this.props
+        const {RemoveBrand,AddBrand,ClearRating,ClearPrice,ResetPage,SetFilter} = this.props
+        SetFilter()
+        ClearRating()
+        ClearPrice()
+        ResetPage()
         if(e.target.checked) {
             AddBrand(id)
-            ClearRating()
-            ClearPrice()
             }
         else {
             RemoveBrand(id)

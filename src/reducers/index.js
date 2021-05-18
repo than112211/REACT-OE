@@ -6,6 +6,8 @@ import Rating from './rating'
 import Price from './price'
 import Search from './search'
 import Pagination from './pagination'
+import Home from './home'
+
 import {combineReducers} from 'redux'
 
 
@@ -18,6 +20,7 @@ const rootReducer = combineReducers({
     price:Price,
     search:Search,
     pagination:Pagination,
+    home:Home,
 });
 
 export default rootReducer

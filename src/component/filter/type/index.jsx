@@ -90,12 +90,14 @@ class Type extends Component {
         }
     }
     handleChangeCheckType(e,id){
-        const {RemoveType,AddType,ClearBrand,ClearRating,ClearPrice} = this.props
+        const {RemoveType,AddType,ClearBrand,SetFilter,ClearRating,ClearPrice,ResetPage} = this.props
+        ClearRating()
+        ClearBrand()
+        ClearPrice()
+        ResetPage()
+        SetFilter()
         if(e.target.checked) {
             AddType(id)
-            ClearRating()
-            ClearBrand()
-            ClearPrice()
             }
         else {
             RemoveType(id)

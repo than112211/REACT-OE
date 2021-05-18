@@ -17,7 +17,6 @@ class Home extends Component {
         this.state = {
             search:null,
             drop:false,
-            totalPage:null
         }
     }
     componentDidMount(){
@@ -42,7 +41,7 @@ class Home extends Component {
     }
     componentDidUpdate(prevProps, prevState){
         const {idCategory,idDetailCategory} = this.props.category
-        const {ToTalProduct,type,brand,rating,price,pagination,CountProduct} = this.props
+        const {ToTalProduct,type,brand,rating,price,pagination,CountProduct,product} = this.props
         const {search} = this.state
         if(this.state.filter !== prevState.filter && this.state.filter == false ||prevProps.pagination.page !== pagination.page) {
             const url = `http://localhost:3000/products?category=${idCategory}&_page=${pagination.page}&_limit=${pagination.limit}`;
@@ -102,13 +101,13 @@ class Home extends Component {
         return str   
     }
     handleClickClearFilter = () => {
-        const {ClearBrand,ClearType,ClearRating,ClearPrice,} = this.props
-        this.setState({
-            filter:false,          
-        })
+        const {ClearBrand,ClearType,ClearRating,ClearPrice,ClearCategory,ResetPage,ClearFilter} = this.props
+        ClearFilter()
+        ClearCategory()
         ClearType()
         ClearBrand()
         ClearRating()
+        ResetPage()
         ClearPrice()
     }
     
@@ -116,9 +115,9 @@ class Home extends Component {
         // let newProduct = product.sort((a,b) => a.price - b.price)
         // ToTalProduct(newProduct)
         const {idCategory,idDetailCategory} = this.props.category
-        const {ToTalProduct,type,brand,rating,price} = this.props
+        const {ToTalProduct,type,brand,rating,price,pagination} = this.props
         const {search} = this.state
-        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: price[1] ? `&price_lte=${price[1]}` :``}${ search ? `&name_like=${search}`:``}&_sort=price&_order=asc`
+        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: price[1] ? `&price_lte=${price[1]}` :``}${ search ? `&name_like=${search}`:``}&_sort=price&_order=asc&_page=${pagination.page}&_limit=${pagination.limit}`
         const option = {
             method : 'GET',
             mode : 'cors',
@@ -137,9 +136,9 @@ class Home extends Component {
         // let newProduct = product.sort((a,b) => b.price - a.price)
         // ToTalProduct(newProduct)
         const {idCategory,idDetailCategory} = this.props.category
-        const {ToTalProduct,type,brand,rating,price} = this.props
+        const {ToTalProduct,type,brand,rating,price,pagination} = this.props
         const {search} = this.state
-        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: price[1] ? `&price_lte=${price[1]}` :``}${ search ? `&name_like=${search}`:``}&_sort=price&_order=desc`
+        const url = `http://localhost:3000/products?category=${idCategory}${idDetailCategory ? `&detail_category=${idDetailCategory}`:``}${this.handleTypeChecked(type) ? this.handleTypeChecked(type) : ``}${this.handleBrandChecked(brand) ? this.handleBrandChecked(brand) : ``}${rating ? `&rating=${rating}` :``}${price[0] ? `&price_gte=${price[0]}`: price[1] ? `&price_lte=${price[1]}` :``}${ search ? `&name_like=${search}`:``}&_sort=price&_order=desc&_page=${pagination.page}&_limit=${pagination.limit}`
         const option = {
             method : 'GET',
             mode : 'cors',
@@ -159,11 +158,18 @@ class Home extends Component {
         })
     }
     handleClickPage(id){
-       
+       this.props.FilterPagination(id)
+    }
+    handleClickPrePage = () => {
+        this.props.PrePage()
+    }
+    handleClickNextPage = () => {
+        this.props.NextPage()
     }
     render() {
-        const {filter,drop} = this.state
-        const {total,pagination} = this.props
+        const {drop} = this.state
+        const {total,pagination,filter} = this.props
+        console.log(this.props)
         return (
             <div>
                 <Header getSearch={this.getSearch}></Header>
@@ -183,6 +189,7 @@ class Home extends Component {
                         </ButtonDropdown>
                     </div>
                         <div className="col-3 col-sm-3">
+                        <div className="filter__container">
                         <Button className="btn__clear" color="danger" style={{display: filter ? 'block' : 'none'}} onClick={this.handleClickClearFilter}>Clear Filter</Button>
                         <Category ></Category>
                         <Type ></Type>
@@ -190,28 +197,26 @@ class Home extends Component {
                         <Rating></Rating>
                         <Price ></Price>
                         </div>
+                        </div>
                         <div className="col-9 col-sm-9">
                                 <Product search={this.state.search} ></Product>
+                                <div className="pagi">
                                 <Pagination aria-label="Page navigation example">
-                                       
-                                        <PaginationItem disabled>
-                                            <PaginationLink previous href="#" />
+                                        <PaginationItem disabled={pagination.page == 1 ? true : false} >
+                                            <PaginationLink previous onClick={this.handleClickPrePage} />
                                         </PaginationItem>
-                                       
                                                  {[...Array(total ? Math.ceil(total/pagination.limit) : 1)].map((total,index) =>{
                                                     return   <PaginationItem active={pagination.page == index+1 ? true : false} >
-                                                    <PaginationLink onClick={() => handleClickPage(index+1)} >
+                                                    <PaginationLink onClick={() => this.handleClickPage(index+1)} >
                                                       {index+1}
                                                     </PaginationLink>
                                                   </PaginationItem>
-                        })}
-            
-                                       
-                                        <PaginationItem>
-                                            <PaginationLink next href="#" />
+                                                    })}
+                                        <PaginationItem disabled={pagination.page >= Math.ceil(total/pagination.limit) ? true : false} >
+                                            <PaginationLink next onClick={this.handleClickNextPage}  />
                                         </PaginationItem>
-                                       
                                         </Pagination>
+                                </div>
                         </div>
                     </div>
                 </div>

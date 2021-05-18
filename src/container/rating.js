@@ -3,6 +3,8 @@ import Rating from '../component/filter/rating/index'
 import {FilterRating} from '../actions/rating'
 import {ToTalProduct,CountProduct} from '../actions/product'
 import {ClearPrice} from '../actions/price'
+import {ResetPage} from '../actions/pagination'
+import {SetFilter} from '../actions/home'
 
 
 const mapStatesToProps = (state) =>{
@@ -16,6 +18,8 @@ const mapStatesToProps = (state) =>{
     }
 }
 const mapActionsToProps = {
+    SetFilter,
+    ResetPage,
     ClearPrice,
     FilterRating,
     ToTalProduct,

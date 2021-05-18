@@ -5,10 +5,11 @@ import {ClearBrand} from '../actions/brand'
 import {ClearType} from '../actions/type'
 import {ClearRating} from '../actions/rating'
 import {ClearPrice} from '../actions/price'
-import product from './product'
-
-
+import {NextPage,PrePage,FilterPagination,ResetPage} from '../actions/pagination'
+import {ClearCategory} from '../actions/category'
+import {ClearFilter} from '../actions/home'
 const mapStatesToProps = (state) =>{
+    console.log(state)
     return {
         category:state.category,
         type:state.type,
@@ -17,10 +18,18 @@ const mapStatesToProps = (state) =>{
         price:state.price,
         product:state.product.product,
         pagination:state.pagination,
-        total:state.product.total
+        total:state.product.total,
+        filter:state.home
+        
     }
 }
 const mapActionsToProps = {
+    ClearFilter,
+    ClearCategory,
+    FilterPagination,
+    PrePage,
+    ResetPage,
+    NextPage,
     ToTalProduct,
     ClearBrand,
     ClearType,

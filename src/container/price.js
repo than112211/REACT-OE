@@ -2,6 +2,8 @@ import {connect} from 'react-redux'
 import Price from '../component/filter/price/index'
 import {FilterPrice} from '../actions/price'
 import {ToTalProduct,CountProduct} from '../actions/product'
+import {ResetPage} from '../actions/pagination'
+import {SetFilter} from '../actions/home'
 
 
 const mapStatesToProps = (state) =>{
@@ -15,6 +17,8 @@ const mapStatesToProps = (state) =>{
     }
 }
 const mapActionsToProps = {
+    SetFilter,
+    ResetPage,
     FilterPrice,
     ToTalProduct,
     CountProduct,
