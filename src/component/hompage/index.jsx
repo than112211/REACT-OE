@@ -112,8 +112,6 @@ class Home extends Component {
     }
     
     handleClickFilterAsc = () => {
-        // let newProduct = product.sort((a,b) => a.price - b.price)
-        // ToTalProduct(newProduct)
         const {idCategory,idDetailCategory} = this.props.category
         const {ToTalProduct,type,brand,rating,price,pagination} = this.props
         const {search} = this.state
@@ -132,9 +130,6 @@ class Home extends Component {
         })
     }
     handleClickFilterDsc = () => {
-        // const {ToTalProduct,product} = this.props
-        // let newProduct = product.sort((a,b) => b.price - a.price)
-        // ToTalProduct(newProduct)
         const {idCategory,idDetailCategory} = this.props.category
         const {ToTalProduct,type,brand,rating,price,pagination} = this.props
         const {search} = this.state
