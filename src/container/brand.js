@@ -13,7 +13,6 @@ const mapStatesToProps = (state) =>{
         type:state.type,
         brand:state.brand,
         pagination:state.pagination
-
     }
 }
 const mapActionsToProps = {

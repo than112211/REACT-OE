@@ -27,4 +27,5 @@ const mapActionsToProps = {
     ClearBrand,
     CountProduct,
 }
+console.log(mapActionsToProps)
 export default connect(mapStatesToProps,mapActionsToProps)(Category)
